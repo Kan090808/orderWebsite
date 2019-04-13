@@ -201,6 +201,9 @@ $(document).ready(function() {
       }
       $("#selectedPrice").val(productPrice[0]);
       $("#addtoPrice").val(productPrice[0]);
+      $("#selectedSweet").val("正常");
+      $("#selectedIce").val("正常");
+      $("#selectedNote").val("");
       $("#modalSubmit").val("加入");
       $("#modalSubmit").addClass("submit-select");
       $("#modalSubmit").removeClass("submit-edit");
