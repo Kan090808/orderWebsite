@@ -174,6 +174,7 @@ $(document).ready(function() {
   }
 
   getTotal();
+
   $(" #seriesTable tr").filter(function() {
     $(this).toggle(null);
   });
