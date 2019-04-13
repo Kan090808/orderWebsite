@@ -123,26 +123,20 @@ function showCart()
 {
   if (isset($_SESSION["cart"])) {
     if (sizeof($_SESSION["cart"]) > 0) {
-      echo "<thead><tr><th></th><th>名稱</th><th>大小</th><th>單價</th>
-            <th>數量</th><th>甜度</th><th>冰塊</th><th>備註</th>
-          </tr></thead><tbody>";
       for ($i = 0; $i < sizeof($_SESSION["cart"]); $i++) {
         list($name, $size, $price, $num, $sweet, $ice, $note) = $_SESSION["cart"][$i];
-        echo '<tr>';
+        echo '<tr id="row' . $i . '">';
         echo '<td><button id="' . $i . '" class="btn btn-info btn-cart edit-btn">修改</button>';
-        echo '<button class="btn btn-warning btn-cart"';
-        $str = "javascript:location.href='control.php?act=cancelProduct&productId=" . $i . "'";
-        echo 'onclick="' . $str . '" >刪除</button></td>';
+        echo '<button class="btn btn-warning btn-cart cancel-btn" name="cancel" value="' . $i . '">刪除</button></td>';
         echo '<td name="' . $name . '" class="cartproName">' . $name . '</td>';
         echo '<td>' . $size . '</td>';
-        echo '<td>' . $price . '</td>';
-        echo '<td>' . $num . '</td>';
+        echo '<td class="price">' . $price . '</td>';
+        echo '<td class="num">' . $num . '</td>';
         echo '<td>' . $sweet . '</td>';
         echo '<td>' . $ice . '</td>';
         echo '<td>' . $note . '</td>';
         echo '</tr>';
       }
-      echo "</tbody>";
     } else {
       echo "<h1 id='cartMessage'>購物車內還沒有商品哦~</h1>";
     }
@@ -161,14 +155,17 @@ function addtoCart($name, $size, $price, $num, $sweet, $ice, $note)
 {
   $arr = array($name, $size, $price, $num, $sweet, $ice, $note);
   array_push($_SESSION["cart"], $arr);
-  header("location:index.php");
+  $i = sizeof($_SESSION["cart"]) - 1;
+  // header("location:index.php");
+  echo $i;
 }
 
 function cancelProduct($id)
 {
   unset($_SESSION["cart"][$id]);
-  $_SESSION["cart"] = array_values($_SESSION["cart"]);
-  header("location:index.php");
+  // var_dump($_SESSION["cart"]);
+  // $_SESSION["cart"] = array_values($_SESSION["cart"]);
+  // header("location:index.php");
 }
 
 function editProduct($id)
@@ -215,8 +212,8 @@ function getTotal()
 
 function edittoCart($id, $name, $size, $price, $num, $sweet, $ice, $note)
 {
-  $_SESSION["cart"][$id] = array($name, $size, $price, $num, $sweet, $ice, $note);
-  header("location:index.php");
+  $arr = array($name, $size, $price, $num, $sweet, $ice, $note);
+  $_SESSION["cart"][$id] = $arr;
 }
 
 function findProductId($name, $size)
@@ -261,6 +258,7 @@ function findTableRow($tableName)
 }
 function confirmCart($type)
 {
+  initCart();
   if (sizeof($_SESSION["cart"]) > 0) {
     $total = getTotal();
     for ($i = 0; $i < sizeof($_SESSION["cart"]); $i++) {
@@ -283,15 +281,15 @@ function confirmCart($type)
     mysqli_query($conn, "set names utf8");
     $sql = "INSERT INTO `bill` (`billNo`,`type`,`productIdList`,`quantityList`,`sweetList`,`iceList`,`totalAmount`,`notesList`,`userName`)
     VALUES (" . strval(intval(findTableRow("bill")) + 1) . ",
-    '" . $type . "', '" . $idList . "', '" . $numList . "', '" . $sweetList . "', '" . $iceList . "', " . strval(getTotal()) . ",
+    '" . $type . "', '" . $idList . "', '" . $numList . "', '" . $sweetList . "', '" . $iceList . "', " . $total . ",
       ' "  . $noteList  . "', ' "  . $_SESSION["userName"]  . "')";
     $result = mysqli_query($conn, $sql);
     if ($result) {
       unset($_SESSION["cart"]);
+      echo "訂購成功";
+    } else {
+      echo "訂購失敗";
     }
-    header("location:index.php");
-  } else {
-    header("location:index.php");
   }
 }
 
@@ -317,5 +315,12 @@ function showHistory()
     echo "</tbody></table></div>";
   } else {
     echo '<h3>無購買記錄哦~</h3>';
+  }
+}
+
+function initCart()
+{
+  if (isset($_SESSION["cart"])) {
+    $_SESSION["cart"] = array_values($_SESSION["cart"]);
   }
 }

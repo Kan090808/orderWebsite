@@ -24,12 +24,15 @@ switch ($action) {
     cancelProduct($_REQUEST["productId"]);
     break;
   case "editProduct":
-    editProduct($_REQUEST["productName"]);
+    editProduct($_REQUEST["productId"]);
     break;
   case "edittoCart":
     edittoCart($_REQUEST["productId"], $_REQUEST["addtoName"], $_REQUEST["addtoSize"], $_REQUEST["addtoPrice"], $_REQUEST["addtoNum"], $_REQUEST["addtoSweet"], $_REQUEST["addtoIce"], $_REQUEST["addtoNote"]);
     break;
   case "confirmCart":
-    confirmCart($_REQUEST["type"]);
+    confirmCart($_REQUEST["billType"]);
+    break;
+  case "getTotal":
+    getTotal();
     break;
 }
