@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2019 年 04 月 07 日 05:55
+-- 產生時間： 2019 年 04 月 14 日 02:07
 -- 伺服器版本: 10.1.32-MariaDB
 -- PHP 版本： 7.2.5
 
@@ -32,6 +32,7 @@ CREATE TABLE `bill` (
   `billNo` int(11) NOT NULL,
   `type` varchar(2) COLLATE utf8_unicode_520_ci NOT NULL,
   `productIdList` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
+  `priceList` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
   `quantityList` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
   `sweetList` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
   `iceList` varchar(50) COLLATE utf8_unicode_520_ci NOT NULL,
@@ -154,7 +155,7 @@ INSERT INTO `product` (`productId`, `productName`, `series`, `size`, `price`) VA
 
 CREATE TABLE `user` (
   `userName` varchar(20) COLLATE utf8_unicode_520_ci NOT NULL,
-  `passWord` int(11) NOT NULL,
+  `passWord` varchar(20) COLLATE utf8_unicode_520_ci NOT NULL,
   `phoneNum` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_520_ci;
 
@@ -163,7 +164,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`userName`, `passWord`, `phoneNum`) VALUES
-('kan', 151102, 905620013);
+('kan', '151102', 905620013),
+('test1999', '1q2w3e4r', 91234567),
+('yankee', 'lovejt', 905620002);
 
 --
 -- 已匯出資料表的索引

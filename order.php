@@ -368,6 +368,10 @@ $(document).ready(function() {
     }, function(data) {
       $("#cartTable tr").remove();
       getTotal();
+      $(".navbar-nav li").removeClass("active");
+      $("#history").addClass("active");
+      localStorage.setItem("page", "history");
+      $("#content").load("history.php");
       alert(data);
     });
   });

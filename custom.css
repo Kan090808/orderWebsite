@@ -79,6 +79,11 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-top: 10px;
 }
 
+.panel-heading {
+  padding: 1px 10px 5px 10px;
+  font-size: 20px;
+}
+
 #loginCard {
   width: 300px;
   margin-top: 35vh;

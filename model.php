@@ -137,8 +137,6 @@ function showCart()
         echo '<td>' . $note . '</td>';
         echo '</tr>';
       }
-    } else {
-      echo "<h1 id='cartMessage'>購物車內還沒有商品哦~</h1>";
     }
   } else {
     $_SESSION["cart"] = array();
@@ -230,20 +228,18 @@ function findProductId($name, $size)
 function findProductName($idStr)
 {
   $idArr = explode(",", $idStr);
+  $nameArr = array();
   global $conn;
   mysqli_query($conn, "set names utf8");
   for ($i = 0; $i < sizeof($idArr); $i++) {
     $sql = "SELECT * FROM `product` WHERE `productId` = '" . $idArr[$i] . "'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
-    if ($i == 0)
-      $nameStr = $row["productName"] . "(" . $row["size"] . ")";
-    else {
-      $nameStr = $nameStr . ", " . $row["productName"] . "(" . $row["size"] . ")";
-    }
+    $nameStr = $row["productName"] . "(" . $row["size"] . ")";
+    array_push($nameArr, $nameStr);
   }
 
-  return $nameStr;
+  return $nameArr;
 }
 
 function findTableRow($tableName)
@@ -265,12 +261,14 @@ function confirmCart($type)
       list($name, $size, $price, $num, $sweet, $ice, $note) = $_SESSION["cart"][$i];
       if ($i == 0) {
         $idList = strval(findProductId($name, $size));
+        $priceList = strval($price);
         $numList = strval($num);
         $noteList = strval($note);
         $sweetList = strval($sweet);
         $iceList = strval($ice);
       } else {
         $idList = $idList . "," . strval(findProductId($name, $size));
+        $priceList = $priceList . "," . strval($price);
         $numList = $numList . "," . strval($num);
         $noteList = $noteList . ";" . strval($note);
         $sweetList = $sweetList . "," . strval($sweet);
@@ -279,16 +277,16 @@ function confirmCart($type)
     }
     global $conn;
     mysqli_query($conn, "set names utf8");
-    $sql = "INSERT INTO `bill` (`billNo`,`type`,`productIdList`,`quantityList`,`sweetList`,`iceList`,`totalAmount`,`notesList`,`userName`)
+    $sql = "INSERT INTO `bill` (`billNo`,`type`,`productIdList`,`priceList`,`quantityList`,`sweetList`,`iceList`,`totalAmount`,`notesList`,`userName`)
     VALUES (" . strval(intval(findTableRow("bill")) + 1) . ",
-    '" . $type . "', '" . $idList . "', '" . $numList . "', '" . $sweetList . "', '" . $iceList . "', " . $total . ",
+    '" . $type . "', '" . $idList . "', '" . $priceList . "','" . $numList . "', '" . $sweetList . "', '" . $iceList . "', " . $total . ",
       ' "  . $noteList  . "', ' "  . $_SESSION["userName"]  . "')";
     $result = mysqli_query($conn, $sql);
     if ($result) {
       unset($_SESSION["cart"]);
-      echo "訂購成功";
+      echo "訂購成功~";
     } else {
-      echo "訂購失敗";
+      echo "訂購失敗！";
     }
   }
 }
@@ -298,21 +296,55 @@ function showHistory()
   echo '<h1>歷史訂單</h1>';
   global $conn;
   mysqli_query($conn, "set names utf8");
-  $sql = "SELECT * FROM `bill`";
+  $sql = "SELECT * FROM `bill` ORDER BY `bill`.`time` DESC";
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
-
-    echo '<div class="table-responsive">
-    <table class="table table-striped" id="hisTable"">
-  <thead></th><th>時間</th><th>訂餐方式</th><th>購買商品</th>
-            <th>購買數量</th><th>共計</th>
-          </tr></thead><tbody>';
     while ($row = mysqli_fetch_assoc($result)) {
-      echo '<tr><td>' . $row["time"] . '</td><td>' . $row["type"] . '</td>
-    <td>' . findProductName($row["productIdList"]) . '</td>
-    <td>' . $row["quantityList"] . '</td><td>' . $row["totalAmount"] . '</td></tr>';
+      $nameArr = findProductName($row["productIdList"]);
+      $priceArr = explode(",", $row["priceList"]);
+      $numArr = explode(",", $row["quantityList"]);
+      $sweetArr = explode(",", $row["sweetList"]);
+      $iceArr = explode(",", $row["iceList"]);
+      $noteArr = explode(";", $row["notesList"]);
+      $numTotal = 0;
+      for ($i = 0; $i < sizeof($numArr); $i++) {
+        $numTotal += $numArr[$i];
+      }
+
+      echo '<div class="panel panel-default">
+    <div class="panel-heading" class="panel-title" data-toggle="collapse" data-target="#bill' . $row["billNo"] . '">
+      <div class="row">
+        <b class="col-md-1">訂單' . $row["billNo"] . '</b>  
+        <b class="col-md-2">方式：' . $row["type"] . '</b>  
+        <b class="col-md-2">數量：' . $numTotal . '</b>  
+        <b class="col-md-2 col-xs-12">總額：' . $row["totalAmount"] . '</b>
+        <b class="col-md-5 col-xs-12">時間：' . $row["time"] . '</b>
+      </div>
+    </div>';
+      echo '<div class="panel-collapse collapse" id="bill' . $row["billNo"] . '">
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead><tr><th>商品</th><th>單價</th><th>數量</th><th>小計</th><th>甜度</th><th>冰塊</th><th>備註</th></tr></thead>
+            <tbody id="bill' . $row["billNo"] . 'Table">';
+      for ($i = 0; $i < sizeof($nameArr); $i++) {
+        $smallSum = intval($priceArr[$i]) * intval($numArr[$i]);
+        echo '<tr><td>' . $nameArr[$i] . '</td><td>' . $priceArr[$i] . '</td><td>' . $numArr[$i] . '</td><td>' . $smallSum . '</td><td>' . $sweetArr[$i] . '</td><td>' . $iceArr[$i] . '</td>';
+        if ($noteArr[$i] != null) {
+          echo '<td>' . $noteArr[$i] . '</td>';
+        } else {
+          echo '<td></td>';
+        }
+        echo '</tr>';
+      }
+
+      echo '</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>';
     }
-    echo "</tbody></table></div>";
   } else {
     echo '<h3>無購買記錄哦~</h3>';
   }
