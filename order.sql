@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2019 年 04 月 14 日 02:07
+-- 產生時間： 2019 年 04 月 14 日 02:41
 -- 伺服器版本: 10.1.32-MariaDB
 -- PHP 版本： 7.2.5
 
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 -- 資料表結構 `bill`
 --
 
+DROP TABLE IF EXISTS `bill`;
 CREATE TABLE `bill` (
   `billNo` int(11) NOT NULL,
   `type` varchar(2) COLLATE utf8_unicode_520_ci NOT NULL,
@@ -48,6 +49,7 @@ CREATE TABLE `bill` (
 -- 資料表結構 `chat`
 --
 
+DROP TABLE IF EXISTS `chat`;
 CREATE TABLE `chat` (
   `userName` varchar(20) COLLATE utf8_unicode_520_ci NOT NULL,
   `adminName` varchar(20) COLLATE utf8_unicode_520_ci NOT NULL,
@@ -61,6 +63,7 @@ CREATE TABLE `chat` (
 -- 資料表結構 `product`
 --
 
+DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `productId` int(11) NOT NULL,
   `productName` varchar(20) COLLATE utf8_unicode_520_ci NOT NULL,
@@ -153,6 +156,7 @@ INSERT INTO `product` (`productId`, `productName`, `series`, `size`, `price`) VA
 -- 資料表結構 `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `userName` varchar(20) COLLATE utf8_unicode_520_ci NOT NULL,
   `passWord` varchar(20) COLLATE utf8_unicode_520_ci NOT NULL,

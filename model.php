@@ -288,6 +288,8 @@ function confirmCart($type)
     } else {
       echo "訂購失敗！";
     }
+  } else {
+    echo "購物車內沒有商品哦~";
   }
 }
 

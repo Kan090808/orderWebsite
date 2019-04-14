@@ -366,12 +366,14 @@ $(document).ready(function() {
     $.post("control.php?act=confirmCart", {
       billType: type
     }, function(data) {
-      $("#cartTable tr").remove();
-      getTotal();
-      $(".navbar-nav li").removeClass("active");
-      $("#history").addClass("active");
-      localStorage.setItem("page", "history");
-      $("#content").load("history.php");
+      if (data == "訂購成功~") {
+        $("#cartTable tr").remove();
+        getTotal();
+        $(".navbar-nav li").removeClass("active");
+        $("#history").addClass("active");
+        localStorage.setItem("page", "history");
+        $("#content").load("history.php");
+      }
       alert(data);
     });
   });
