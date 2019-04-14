@@ -9,7 +9,7 @@ function login($userName, $passWord)
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
     $_SESSION["login"] = "yes";
-    $_SESSION["userName"] = (mysqli_fetch_assoc($result))["userName"];
+    $_SESSION["userName"] = mysqli_fetch_assoc($result)["userName"];
   } else {
     $_SESSION["failed"] = "logIn";
     unset($_SESSION["signUp"]);
@@ -276,11 +276,11 @@ function confirmCart($type)
       }
     }
     global $conn;
-    mysqli_query($conn, "set names utf8");
+    // mysqli_query($conn, "set names utf8");
     $sql = "INSERT INTO `bill` (`billNo`,`type`,`productIdList`,`priceList`,`quantityList`,`sweetList`,`iceList`,`totalAmount`,`notesList`,`userName`)
     VALUES (" . strval(intval(findTableRow("bill")) + 1) . ",
     '" . $type . "', '" . $idList . "', '" . $priceList . "','" . $numList . "', '" . $sweetList . "', '" . $iceList . "', " . $total . ",
-      ' "  . $noteList  . "', ' "  . $_SESSION["userName"]  . "')";
+      ' "  . $noteList  . "', '"  . $_SESSION["userName"]  . "')";
     $result = mysqli_query($conn, $sql);
     if ($result) {
       unset($_SESSION["cart"]);
@@ -298,7 +298,7 @@ function showHistory()
   echo '<h1>歷史訂單</h1>';
   global $conn;
   mysqli_query($conn, "set names utf8");
-  $sql = "SELECT * FROM `bill` ORDER BY `bill`.`time` DESC";
+  $sql = "SELECT * FROM `bill` WHERE `bill`.`userName` = '" . $_SESSION["userName"] . "'ORDER BY `bill`.`time` DESC";
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
@@ -316,11 +316,11 @@ function showHistory()
       echo '<div class="panel panel-default">
     <div class="panel-heading" class="panel-title" data-toggle="collapse" data-target="#bill' . $row["billNo"] . '">
       <div class="row">
-        <b class="col-md-1">訂單' . $row["billNo"] . '</b>  
+        <b class="col-md-2">訂單號碼：' . $row["billNo"] . '</b>  
         <b class="col-md-2">方式：' . $row["type"] . '</b>  
         <b class="col-md-2">數量：' . $numTotal . '</b>  
         <b class="col-md-2 col-xs-12">總額：' . $row["totalAmount"] . '</b>
-        <b class="col-md-5 col-xs-12">時間：' . $row["time"] . '</b>
+        <b class="col-md-4 col-xs-12">時間：' . $row["time"] . '</b>
       </div>
     </div>';
       echo '<div class="panel-collapse collapse" id="bill' . $row["billNo"] . '">
