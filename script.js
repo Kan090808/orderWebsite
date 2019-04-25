@@ -9,15 +9,7 @@ $(document).ready(function () {
   var page = localStorage.getItem("page") + ".php";
   $("#content").load(page);
 
-  $(".navbar-brand").click(function () {
-    $("#myNavbar").removeClass("in");
-    $(".navbar-nav li").removeClass("active");
-    $("#homepage").addClass("active");
-    localStorage.setItem("page", "homepage");
-    $("#content").load("homepage.php");
-  });
-
-  $(".navbar-nav li").click(function () {
+  $(".navbar-brand",".navbar-nav li").click(function () {
     $("#myNavbar").removeClass("in");
     $(".navbar-nav li").removeClass("active");
     $(this).addClass("active");
@@ -25,5 +17,4 @@ $(document).ready(function () {
     var page = $(this).attr("id") + ".php";
     $("#content").load(page);
   });
-
 });
