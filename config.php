@@ -2,7 +2,7 @@
 global $db;
 $db["server"] = "localhost";
 $db["user"] = "kan";
-$db["password"] = "151102";
+$db["password"] = "15110215";
 $db["dbname"] = "order";
 // Create connection
 $conn = new mysqli($db["server"], $db["user"], $db["password"], $db["dbname"]);

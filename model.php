@@ -276,7 +276,7 @@ function confirmCart($type)
       }
     }
     global $conn;
-    // mysqli_query($conn, "set names utf8");
+    mysqli_query($conn, "set names utf8");
     $sql = "INSERT INTO `bill` (`billNo`,`type`,`productIdList`,`priceList`,`quantityList`,`sweetList`,`iceList`,`totalAmount`,`notesList`,`userName`)
     VALUES (" . strval(intval(findTableRow("bill")) + 1) . ",
     '" . $type . "', '" . $idList . "', '" . $priceList . "','" . $numList . "', '" . $sweetList . "', '" . $iceList . "', " . $total . ",
@@ -287,6 +287,7 @@ function confirmCart($type)
       echo "訂購成功~";
     } else {
       echo "訂購失敗！";
+      echo $sql;
     }
   } else {
     echo "購物車內沒有商品哦~";
