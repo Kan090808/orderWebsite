@@ -1,7 +1,9 @@
 $(document).ready(function () {
+  var homepageKey = "order";
+
   $(".navbar-nav li").removeClass("active");
   if (localStorage.getItem("page") === null) {
-    localStorage.setItem("page", "homepage");
+    localStorage.setItem("page", homepageKey);
   }
   var page = "#" + localStorage.getItem("page");
   $(page).addClass("active");
@@ -12,9 +14,9 @@ $(document).ready(function () {
   $(".navbar-brand").click(function () {
     $("#myNavbar").removeClass("in");
     $(".navbar-nav li").removeClass("active");
-    $("#homepage").addClass("active");
-    localStorage.setItem("page", "homepage");
-    $("#content").load("homepage.php");
+    $("#"+homepageKey).addClass("active");
+    localStorage.setItem("page", homepageKey);
+    $("#content").load(homepageKey +".php");
   });
 
   $(".navbar-nav li").click(function () {

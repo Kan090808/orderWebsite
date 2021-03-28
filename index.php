@@ -19,13 +19,10 @@ require("header.php");
 
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li id="homepage"><a href="#">首頁</a></li>
           <li id="order"><a href="#">點餐</a></li>
           <li id="intro"><a href="#">產品介紹</a></li>
           <li id="menu"><a href="#">菜單</a></li>
           <li id="history"><a href="#">歷史訂單</a></li>
-          <li id="chat"><a href="#">咨詢服務</a></li>
-          <li id="contact"><a href="#">聯絡我們</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="control.php?act=logout"><span class="glyphicon glyphicon-log-in"></span>登出</a>
