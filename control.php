@@ -1,16 +1,7 @@
 <?php
-require("model.php");
+require_once("model/model.php");
 $action = $_REQUEST['act'];
 switch ($action) {
-  case "login":
-    login($_REQUEST["userName"], $_REQUEST["passWord"]);
-    break;
-  case "logout":
-    logout();
-    break;
-  case "signUp":
-    signUp($_REQUEST["userName"], $_REQUEST["passWord"], $_REQUEST["phoneNum"]);
-    break;
   case "selectProduct":
     selectProduct($_REQUEST["productName"]);
     break;

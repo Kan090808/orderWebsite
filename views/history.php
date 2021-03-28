@@ -1,4 +1,4 @@
-<?php require("model.php"); ?>
+<?php require_once("../model/model.php"); ?>
 
 <div class="row">
   <?php showHistory(); ?>

@@ -87,6 +87,10 @@ input[type="number"]::-webkit-outer-spin-button {
   cursor: pointer;
 }
 
+.panel-heading:hover{
+  box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
 #loginCard {
   width: 300px;
   margin-top: 35vh;

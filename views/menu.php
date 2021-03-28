@@ -1,5 +1,5 @@
 <?php
-require("model.php");
+require_once("../model/model.php");
 ?>
 <div class="row">
   <ul class="nav nav-tabs">
@@ -9,7 +9,7 @@ require("model.php");
 
   <div class="tab-content">
     <div id="menuPic" class="tab-pane fade in active">
-      <img src="img/menu.jpg">
+      <img src="../img/menu.jpg">
     </div>
     <div id="searchMenu" class="tab-pane fade">
       <div class="row">

@@ -2,11 +2,12 @@ $(document).ready(function () {
   var homepageKey = "order";
 
   $(".navbar-nav li").removeClass("active");
-  if (localStorage.getItem("page") === null) {
+  if (localStorage.getItem("page") === null || localStorage.getItem("page") == "undefined") {
     localStorage.setItem("page", homepageKey);
   }
-  var page = "#" + localStorage.getItem("page");
-  $(page).addClass("active");
+
+  var pageClass = "#" + localStorage.getItem("page");
+  $(pageClass).addClass("active");
 
   var page = localStorage.getItem("page") + ".php";
   $("#content").load(page);

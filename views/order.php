@@ -1,8 +1,7 @@
 <?php
-require("model.php");
+require_once("../model/model.php");
 initCart();
 ?>
-
 
 <div class="row">
   <div class="col-md-8">
